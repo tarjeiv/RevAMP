@@ -1,0 +1,299 @@
+<!doctype html>
+<html>
+  <head>
+<title>RevAMP - categories</title>
+<link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css' media='screen'>
+<link href='revamp.css' rel='stylesheet' type='text/css' media='screen'>
+<link href='smoke.css' rel='stylesheet' type='text/css' media='screen'>
+<script src="jquery.min.js"></script>
+<script src="smoke.min.js"></script>
+<script src="revamp.js"></script>
+</head>
+<body>
+<div id='categories'>
+  <div class='header'>Categories</div>
+  <div id='level_0' class='level'>
+    <div class='category'>Cafe & Restaurants</div>
+    <div class='category'>Entertainment</div>
+    <div class='category selectedSubCategory'>Health</div>
+    <div class='category'>Legal services</div>
+    <div class='category'>Real estate</div>
+    <div class='category addCategory'>+ Add new</div>
+  </div>
+  <div id='level_1' class='level'>
+    <div class='category'>Dental</div>
+    <div class='category selectedSubCategory'>Medical</div>
+    <div class='category'>Mental</div>
+    <div class='category addCategory'>+ Add new</div>
+  </div>
+  <div id='level_2' class='level'>
+    <div class='category selectedSubCategory'>Other</div>
+    <div class='category'>Practitioners</div>
+    <div class='category addCategory'>+ Add new</div>
+  </div>
+  <div id='level_3' class='level'>
+    <div class='category'>Herbal</div>
+    <div class='category selectedCategory'>Traditional</div>
+    <div class='category'>Voodoo</div>
+    <div class='category addCategory'>+ Add new</div>
+  </div>
+  <div id='level_3' class='level'>
+    <div class='category addCategory'>+ Add new</div>
+  </div>
+</div>
+
+
+<div class='divider'></div>
+<div id='createAccountTab'>
+  <div class='header'>Create an account</div>
+  <div id='accountInfo'>
+    <table>
+      <tr><td>Account name</td><td><input name='accountName' class='prefillable'></td></tr>
+      <tr><td>Business URL</td><td><input name='businessURL' class='prefillable'></td></tr>
+      <tr><td>Phone Number</td><td><input name='phoneNumber' class='prefillable'></td></tr>
+      <tr><td>Adress</td><td><input name='adress' class='prefillable'></td></tr>
+      <tr><td>City</td><td><input name='city' class='prefillable'></td></tr>
+      <tr><td>Login email</td><td><input name='loginEmail'></td></tr>
+      <tr><td>Password</td><td><input name='password'></td></tr>
+    </table>
+    <table>
+      <tr>
+        <td>Country</td>
+        <td>
+          <select name='country' class='prefillable'>
+            <option>United States</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Region/State</td>
+        <td>
+          <select name='region' class='prefillable'>
+            <option>California</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>City</td>
+        <td>
+          <select name='city' class='prefillable'>
+            <option>Acton, CA US</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Language</td>
+        <td colspan='2'>
+          <select name='language' class='prefillable'>
+            <option>English (US)</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Currency</td>
+        <td>
+          <select name='currency'>
+            <option>USD ($)</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><span id='budget'>Budget</span></td>
+        <td>
+          <select name='budget'>
+            <option value='123123'>$39 000.00, 18/04/2011 - 30/02/2015, Order Id 123123</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><span id='parentMCC'>Parent MCC</span></td>
+        <td>
+          <select name='parentMCC'>
+            <option value='321321'>Master MCC for my company (ID 321-212-312)</option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr><td>Other</td><td></td></tr>
+      <tr><td>Possible</td><td></td></tr>
+      <tr><td>Prefills</td><td></td></tr>
+    </table>
+  </div>
+  <div class='header'>Campaigns<span class='headerButton'>+</span></div>
+  <div id='campaigns'>
+    <div class='subHeader'>Local campaign - <span class='prefilled'>$accountName</span><span class='showDetails'></span></div>
+    <div class='subHeader'>National campaign - <span class='prefilled'>$accountName</span><span class='showDetails'></span></div>
+    <div class='campaign'>
+      Setting
+      - Daily budget
+      - Start/End
+      - Geo targeting
+      - Target Languages
+      - Ad Serving: Optimize / Rotate
+      - Max CPC / Budget optimizer [ceiling]
+
+      Deliberately not implemented:
+      -----------------------------
+      - Ad scheduling
+      - Networks
+      - Extensions
+        - Location Extension
+        - Product
+        - Call
+        - Sitelinks
+        - Social extensions
+
+
+
+
+      <div class='subHeader'>Ad Groups<span class='headerButton'>+</span></div>
+      <div class='adGroups'>
+        <div class='header'>Ad Group #1 - <span class='prefilled'>$campaign</span> - <span class='prefilled'>$accountName</span><span class='showDetails'></span></div>
+        <div class='adGroup'>
+        <div class='keywords'>
+          <div class='subHeader'>Keywords<span class='headerButton'>+</span> <span class='headerButton'>Geo modify</span></div>
+            <div class='keyword'>cancer <span class='prefilled'><span class='geoModified'>$city<span></span></div>
+            <div class='keyword exact'>e coli <span class='prefilled'><span class='geoModified'>$city<span></span></div>
+            <div class='keyword negative'>experimental <span class='prefilled'><span class='geoModified'>$city<span></span></div>
+            <div class='keyword exact'>gallstones <span class='prefilled'><span class='geoModified'>$city<span></span></div>
+            <div class='keyword phrase'>good doctor <span class='prefilled'><span class='geoModified'>$city<span></span></div>
+          </div>
+        <div class='ads'>
+         <div class='subHeader'>Ads<span class='headerButton'>+</span></div>
+           <div class='ad'>
+            <div class='title'>Healthy options</div>
+            <div class='text'>Feeling under the weather?<br>Are you getting the right nutrition?</div>
+            <div class='url'>gogetbetter.com</div>
+           </div>
+          <div class='ad'>
+          <div class='title'>Happy customers are healthy customers</div>
+            <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+            <div class='url'>simpletechnologies.com</div>
+           </div>
+           <div class='ad'>
+            <div class='title'>Nasty creatures</div>
+            <div class='text'>Having creature problems?<br>Get it sorted today!<br></div>
+            <div class='url'>expositnow.com</div>
+           </div>
+          <div class='ad'>
+            <div class='title'>Happy customers are healthy customers</div>
+            <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+            <div class='url'>simpletechnologies.com</div>
+          </div>
+        </div>
+      </div>
+      <div class='subHeader'>Ad Group #2 - <span class='prefilled'>$campaign</span> - <span class='prefilled'>$accountName</span><span class='showDetails'></span></div>
+      <div class='adGroup'>
+        Ad Group #2
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <div class='button' id='cancelCreateAccountButton'>Cancel</div>
+  <div class='button' id='cancelCreateAccountButton'>Save as preset</div>
+</div>
+<div class='button' id='createAccountButton'>Create account</div>
+
+<div id='categoryContentTab'>
+<div class='keywords'>
+  <div class='header'>Keywords<span class='headerButton'>+</span></div>
+  <div class='keyword'>cancer</div>
+  <div class='keyword exact'>e coli</div>
+  <div class='keyword negative'>experimental</div>
+  <div class='keyword exact'>gallstones</div>
+  <div class='keyword phrase'>good doctor</div>
+  <div class='keyword'>headache</div>
+  <div class='keyword'>leukemia</div>
+  <div class='keyword'>meningitis</div>
+  <div class='keyword'>natural immunity</div>
+  <div class='keyword negative'>new age</div>
+  <div class='keyword negative'>painkillers</div>
+  <div class='keyword exact'>practioner</div>
+  <div class='keyword'>rabies</div>
+  <div class='keyword'>stomach ache</div>
+  <div class='keyword'>vaccination</div>
+</div>
+<div class='ads'>
+ <div class='header'>Ads<span class='headerButton'>+</span></div>
+ <div class='ad'>
+    <div class='title'>Healthy options</div>
+    <div class='text'>Feeling under the weather?<br>Are you getting the right nutrition?</div>
+    <div class='url'>gogetbetter.com</div>
+ </div>
+ <div class='ad'>
+    <div class='title'>Happy customers are healthy customers</div>
+    <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+    <div class='url'>simpletechnologies.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Nasty creatures</div>
+    <div class='text'>Having creature problems?<br>Get it sorted today!<br></div>
+    <div class='url'>expositnow.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Happy customers are healthy customers</div>
+    <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+    <div class='url'>simpletechnologies.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Healthy options</div>
+    <div class='text'>Feeling under the weather?<br>Are you getting the right nutrition?</div>
+    <div class='url'>gogetbetter.com</div>
+ </div>
+ <div class='ad'>
+    <div class='title'>Happy customers are healthy customers</div>
+    <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+    <div class='url'>simpletechnologies.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Nasty creatures</div>
+    <div class='text'>Having creature problems?<br>Get it sorted today!<br></div>
+    <div class='url'>expositnow.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Happy customers are healthy customers</div>
+    <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+    <div class='url'>simpletechnologies.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Healthy options</div>
+    <div class='text'>Feeling under the weather?<br>Are you getting the right nutrition?</div>
+    <div class='url'>gogetbetter.com</div>
+ </div>
+ <div class='ad'>
+    <div class='title'>Happy customers are healthy customers</div>
+    <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+    <div class='url'>simpletechnologies.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Nasty creatures</div>
+    <div class='text'>Having creature problems?<br>Get it sorted today!<br></div>
+    <div class='url'>expositnow.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Happy customers are healthy customers</div>
+    <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+    <div class='url'>simpletechnologies.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Healthy options</div>
+    <div class='text'>Feeling under the weather?<br>Are you getting the right nutrition?</div>
+    <div class='url'>gogetbetter.com</div>
+ </div>
+ <div class='ad'>
+    <div class='title'>Happy customers are healthy customers</div>
+    <div class='text'>Or was it the other way around?<br>This is supposed to be slick!<br></div>
+    <div class='url'>simpletechnologies.com</div>
+ </div>
+  <div class='ad'>
+    <div class='title'>Nasty creatures</div>
+    <div class='text'>Having creature problems?<br>Get it sorted today!<br></div>
+    <div class='url'>expositnow.com</div>
+ </div>
+</div>
+</div>
+
+</body>
+</html>
