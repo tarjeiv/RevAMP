@@ -6,14 +6,14 @@ body, div {
   margin-right:10px;
 }
 #categories {
-  display:none;
+  //display:none;
 }
 #categoryContentTab {
-  display:none;
+  //display:none;
 }
 #createAccountTab {
-  display:block;
-  //display:none;
+  //display:block;
+  display:none;
 }
 .category, .button {
   padding:10px;
@@ -157,12 +157,14 @@ body, div {
 }
 .campaign {
   margin-left:20px;
+  display:none;
 }
 .adGroup {
   margin-left:40px;
+  display:none;
 }
 
-#accountInfo table {
+#accountInfo table, .campaign table {
   float:left;
   margin-bottom:20px;
 }
@@ -191,7 +193,7 @@ body, div {
   color:#aaa;
 }
 .prefillable, .prefilled {
-  background-color:#efe;
+  background-color:#dfd;
 }
 .prefilled {
   padding:4px;
@@ -203,6 +205,7 @@ body, div {
   border-left:10px solid transparent;
   border-top:10px solid #aaa;
   border-right:10px solid transparent;
+  cursor:pointer;
 }
 .showingDetails {
   margin-top:2px;
@@ -213,4 +216,12 @@ input {
   width:200px;
   margin-left:20px;
   margin-right:40px;
+}
+.radioInput {
+  width:10px;
+  margin-right:5px;
+}
+.dateInput {
+  width:70px;
+  margin-right:20px;
 }

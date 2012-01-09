@@ -114,25 +114,53 @@
         </td>
       </tr>
     </table>
+    <!--
     <table>
       <tr><td>Other</td><td></td></tr>
       <tr><td>Possible</td><td></td></tr>
       <tr><td>Prefills</td><td></td></tr>
     </table>
+    -->
   </div>
   <div class='header'>Campaigns<span class='headerButton'>+</span></div>
   <div id='campaigns'>
     <div class='subHeader'>Local campaign - <span class='prefilled'>$accountName</span><span class='showDetails'></span></div>
     <div class='subHeader'>National campaign - <span class='prefilled'>$accountName</span><span class='showDetails'></span></div>
     <div class='campaign'>
-      Setting
-      - Daily budget
-      - Start/End
-      - Geo targeting
-      - Target Languages
-      - Ad Serving: Optimize / Rotate
-      - Max CPC / Budget optimizer [ceiling]
-
+      <table>
+        <tr><td>Daily budget</td><td><input name='dailyBudget'></td></tr>
+        <tr>
+          <td>Campaign start/end</td>
+          <td>
+            <input class='dateInput' name='dateStart'>
+             -
+            <input class='dateInput' name='dateEnd'>
+          </td>
+        </tr>
+      </table>
+      <table>
+        <tr><td>Geo Targeting</td><td><input name='geoTarget'></td></tr>
+        <tr><td>Target languages</td><td><input name='languageTarget'></td></tr>
+        <tr>
+      </table>
+      <table>
+          <td>Ad Serving</td>
+          <td>
+            <input type='radio' class='radioInput' name='adServing' value='optimize' checked> Optimize
+          </td><td>
+            <input type='radio' class='radioInput' name='adServing' value='rotate'> Rotate
+          </td>
+        </tr>
+        <tr>
+          <td>Budget optimizer</td>
+          <td>
+            <input type='radio' class='radioInput' name='budgetOptimizer' value='on'> On
+          </td><td>
+            <input type='radio' class='radioInput' name='budgetOptimizer' value='off' checked> Off
+          </td>
+        </tr>
+      </table>
+      <!--
       Deliberately not implemented:
       -----------------------------
       - Ad scheduling
@@ -143,7 +171,7 @@
         - Call
         - Sitelinks
         - Social extensions
-
+        -->
 
 
 
@@ -183,7 +211,7 @@
           </div>
         </div>
       </div>
-      <div class='subHeader'>Ad Group #2 - <span class='prefilled'>$campaign</span> - <span class='prefilled'>$accountName</span><span class='showDetails'></span></div>
+      <div class='header'>Ad Group #2 - <span class='prefilled'>$campaign</span> - <span class='prefilled'>$accountName</span><span class='showDetails'></span></div>
       <div class='adGroup'>
         Ad Group #2
       </div>
