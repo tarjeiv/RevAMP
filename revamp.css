@@ -1,9 +1,15 @@
-body, div {
+body, div, input {
   font-family: 'Inconsolata', sans-serif;
 }
 .level {
   float:left;
   margin-right:10px;
+}
+.hidden {
+  display:none;
+}
+.visible {
+  display:block;
 }
 #categories {
   //display:none;
@@ -25,6 +31,12 @@ body, div {
   vertical-align:middle;
   position: relative;
   box-shadow: 2px 2px 2px #ccc;
+}
+.category input {
+  font-size:16px;
+  margin:0px;
+  padding:0px;
+  width:95  %;
 }
 .category:hover, .button:hover {
   background-color:#3a3;
@@ -85,12 +97,12 @@ body, div {
   clear:both;
 }
 
-.keywords {
+#keywords {
   float:left;
   width:30%;
   margin-right:10px;
 }
-.ads {
+#ads {
   float:left;
   width:69%;
 }
@@ -98,6 +110,13 @@ body, div {
   padding:6px;
   cursor: pointer;
   position:relative;
+}
+#keywords input {
+  margin-top:3px;
+  margin-bottom:3px;
+  margin-left:2px;
+  font-size:16px;
+  width:97%;
 }
 .keyword:hover, .keyword:nth-child(even):hover {
  background:#ddd;
@@ -117,30 +136,48 @@ body, div {
 .keyword.negative {
   color:#a00;
 }
+.keyword.phrase.negative:before {
+  content:'-"';  
+}
+.keyword.exact.negative:before {
+  content:'-[';  
+}
 .keyword.negative:before {
   content:'-';
 }
 .ad {
   width:262px;
-  height:62px;
+  height:68px;
   float:left;
   border:1px solid #ddd;
   box-shadow: 2px 2px 2px #eee;
   padding:4px;
   margin-right:10px;
   margin-bottom:10px;
+  cursor: pointer;
 }
+.ad.inputMode {
+  height:140px;
+  text-align:center;
+  padding:0px;
+  margin:0px;
+  padding-top:3px;
+}
+.ad input {
+  width:98%;
+  border:0px;
+  padding:0px;
+  margin:0px;
+}
+.ad input.descriptionLine1, .ad input.descriptionLine2 {
+  font-size:16px;
+}
+
 .ad .title {
   font-size:14px;
   color: #00C;
-  cursor: pointer;
-  margin-bottom:3px;
 }
-.ad .text {
-  font-size:12px;
-  margin-bottom:3px;
-}
-.ad .url {
+.ad .displayUrl {
   color: green;
   font-size: 12px;
 }
