@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+	<title>RevAMP - categories</title>
+	<link href='revamp.css' rel='stylesheet' type='text/css' media='screen'>
+	<script src="jquery.min.js"></script>
+	<script src="revamp.js"></script>
+	<script src="revamp.model.js"></script>
+	<script>
+	  $(document).ready(function () {
+	  var top = new Category({id:0, name:'Toplevel'});
+
+	  top.createSubCategory({id:1,name:'Cafe & Restaurants'});
+	  top.createSubCategory({id:2,name:'Entertainment'});
+	  var sub1 = top.createSubCategory({id:3,name:'Health'});
+	  var zub1 = top.createSubCategory({id:4,name:'Legal services'});
+	  top.createSubCategory({id:5,name:'Real estate'});
+
+	  zub1.createSubCategory({id:911,name:'Taxes'});
+	  var zub2 = zub1.createSubCategory({id:912,name:'Other'});
+	  zub2.createSubCategory({id:9911, name:'Other'});
+
+	  sub1.createSubCategory({id:11,name:'Dental'});
+	  var sub2 = sub1.createSubCategory({id:12,name:'Medical'});
+	  sub1.createSubCategory({id:13,name:'Mental'});
+
+	  var sub3 = sub2.createSubCategory({id:21,name:'Other'});
+	  sub2.createSubCategory({id:22,name:'Practioners'});
+
+	  sub3.createSubCategory({id:31,name:'Herbal'});
+	  sub3.createSubCategory({id:32,name:'Traditional'});
+	  sub3.createSubCategory({id:33,name:'Voodoo'});
+
+	  sub1.createKeywordFromString(' [ test wer ] ');
+  	  sub1.createKeywordFromString('- [ test sljkdf ] ');
+  	  sub1.createKeywordFromString('-[ test lkajsd]');
+  	  sub1.createKeywordFromString('-"test"');
+  	  sub1.createKeywordFromString(' - " test "');
+  	  sub1.createKeywordFromString(' "test"');
+  	  sub1.createKeywordFromString('[test]');
+  	  sub1.createKeyword({id:1312,matchType:'broad',  isNegative:false, text:'hello'});
+  	  sub1.createKeyword({id:2312,matchType:'exact',  isNegative:false, text:'hello'});
+  	  sub1.createKeyword({id:3312,matchType:'phrase', isNegative:false, text:'hello'});
+  	  sub1.createKeyword({id:1312,matchType:'broad',  isNegative:true,  text:'hello'});
+  	  sub1.createKeyword({id:2312,matchType:'exact',  isNegative:true,  text:'hello'});
+  	  sub1.createKeyword({id:3312,matchType:'phrase', isNegative:true,  text:'hello'});
+
+  	  sub1.createAd({
+  	  	id:15324,
+  		title:'Buy flowers today',
+  		descriptionLine1:'Come to our fabulous flower shop',
+  		descriptionLine2:'And buy some flowers today',
+  		displayUrl:'flowershop.com',
+  		url:'evil-urls.com/1234'
+  	  });
+  	  sub1.createAd({
+  	  	id:25324,
+  		title:'Buy flowers today',
+  		descriptionLine1:'Come to our fabulous flower shop',
+  		descriptionLine2:'And buy some flowers today',
+  		displayUrl:'flowershop.com',
+  		url:'evil-urls.com/1234'
+  	  });
+  	  sub1.createAd({
+  	  	id:35324,
+  		title:'Buy flowers today',
+  		descriptionLine1:'Come to our fabulous flower shop',
+  		descriptionLine2:'And buy some flowers today',
+  		displayUrl:'flowershop.com',
+  		url:'evil-urls.com/1234'
+  	  });
+  	  /*
+  	
+	  var renderer = new Renderer();
+	  renderer.renderCategories( top, $('#categories') );
+	  renderer.selectCategory(sub1);	
+
+	  $('#addKeywordButton').click(function () {renderer.addKeyword();});
+	  $('#addAdButton').click(function () {renderer.addAd();});
+	  $('#jsontest').click(function(){
+	  	renderer.testREST('categories', {}, function (data) {
+	       console.log(data);
+	    });
+		});
+	  $('#jsontest').click();
+	  */
+
+	  /*
+	  router.attach("/categories/", BusinessCategoryApi.class);
+      router.attach("/categories/{categoryId}", BusinessCategoryApi.class);
+      router.attach("/categories/{categoryId}/textads/", TextAdApi.class);
+      router.attach("/categories/{categoryId}/keywords/", LibraryKeywordApi.class);
+	  */
+
+	});
+	</script>
+</head>
+<style>
+#dump {border:1px solid red;}
+</style>
+<body>
+<div id='categories'></div>
+<div id='categoryContentTab'>
+<div class='header'>Keywords<span class='headerButton' id='addKeywordButton'>+</span></div>
+<div id='keywords'></div>
+<div class='header'>Ads<span class='headerButton' id='addAdButton'>+</span></div>
+<div id='ads'></div>
+</div>
+</body>
+</html>

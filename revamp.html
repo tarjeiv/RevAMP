@@ -1,17 +1,131 @@
 <!doctype html>
 <html>
   <head>
-<title>RevAMP - categories</title>
+<title>RevAMP</title>
 <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css' media='screen'>
 <link href='revamp.css' rel='stylesheet' type='text/css' media='screen'>
 <link href='smoke.css' rel='stylesheet' type='text/css' media='screen'>
 <script src="jquery.min.js"></script>
 <script src="smoke.min.js"></script>
-<script src="revamp.js"></script>
+<script src="revamp.model.js"></script>
+<script src="revamp.controller.js"></script>
 </head>
 <body>
-<div id='categories'>
+
+<div id='categoriesContainer'>
+  <div class='header'>Categories<button id='configureButton'>Preferences</button></div>
+    <div id='preferences'>
+      <table>
+        <tr>
+          <td colspan='2' class='header'>Resources - Taxonomy</td>
+        </tr>
+        <tr>
+          <td>Base URL</td>
+          <td><input name='baseUrl' value='http://localhost:8081'></td>
+        </tr>
+        <tr>
+          <td>Categories list</td>
+          <td><input name='categories' value='/categories/'></td>
+        </tr>
+        <tr>
+          <td>Category resource</td>
+          <td><input name='category' value='/category/{categoryId}'></td>
+        </tr>
+        <tr>
+          <td>Keywords list</td>
+          <td><input name='keywords' value='/category/{categoryId}/keywords/'></td>
+        </tr>
+        <tr>
+          <td>Keyword resource</td>
+          <td><input name='keyword' value='/keyword/{keywordId}'></td>
+        </tr>
+        <tr>
+          <td>Ads list</td>
+          <td><input name='ads' value='/category/{categoryId}/textads/'></td>
+        </tr>
+        <tr>
+          <td>Ad resource</td>
+          <td><input name='ad' value='/textad/{adId}'></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td colspan='2' class='header'>Resources - AdWords</td>
+        </tr>
+        <tr>
+          <td>Base URL</td>
+          <td><input name='' value='http://torusan.appspot.com/awapi-RESTful'></td>
+        </tr>
+        <tr>
+          <td>Accounts list</td>
+          <td><input name='' value='/accounts'></td>
+        </tr>
+        <tr>
+          <td>Account resource</td>
+          <td><input name='' value='/account'></td>
+        </tr>
+        <tr>
+          <td>Campaigns list</td>
+          <td><input name='' value='/account/{accountId}/campagins'></td>
+        </tr>
+        <tr>
+          <td>Campaign resource</td>
+          <td><input name='' value='/campaign/{campaignId}'></td>
+        </tr>
+
+        <tr>
+          <td>AdGroup list</td>
+          <td><input name='' value='/campaign/{campaignId}/adgroups'></td>
+        </tr>
+        <tr>
+          <td>AdGroup resource</td>
+          <td><input name='' value='/adgroup/{adGroupId}'></td>
+        </tr>
+
+        <tr>
+          <td>Keywords list</td>
+          <td><input name='' value='/adgroup/{adGroupId}/keywords'></td>
+        </tr>
+        <tr>
+          <td>Keyword resource</td>
+          <td><input name='' value='/keyword/{keywordId}'></td>
+        </tr>
+
+        <tr>
+          <td>Ads list</td>
+          <td><input name='' value='/adgroup/{adGroupId}/ads'></td>
+        </tr>
+        <tr>
+          <td>Ads resource</td>
+          <td><input name='' value='/ads/{adId}'></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td colspan='2' class='header'>AdWords</td>
+        </tr>
+        <tr>
+          <td>MCC id</td>
+          <td><input name='' value='123982322'></td>
+        </tr>
+        <tr>
+          <td>Developer Token</td>
+          <td><input name='' value='29203901223'></td>
+        </tr>
+        <tr>
+          <td>MDO id</td>
+          <td><input name='' value='1232389574'></td>
+        </tr>
+      </table>
+
+      <div class='button' id='saveConfigurationButton'>Save configuration</div>
+
+    </div>
+  <div id='categories'></div>
 </div>
+
 
 <div class='divider'></div>
 <div id='createAccountTab'>
@@ -192,14 +306,20 @@
   <div class='button' id='cancelCreateAccountButton'>Cancel</div>
   <div class='button' id='cancelCreateAccountButton'>Save as preset</div>
 </div>
+
 <div class='button' id='createAccountButton'>Create account</div>
 
 <div id='categoryContentTab'>
-<div class='header'>Keywords<span class='headerButton'>+</span></div>
-<div id='keywords'></div>
-<div class='header'>Ads<span class='headerButton'>+</span></div>
-<div id='ads'></div>
+  <div id='keywordsContainer'>
+    <div class='header'>Keywords<button id='addKeywordButton'>+</button></div>
+    <div id='keywords'></div>
+  </div>
+  <div id='adsContainer'>
+    <div class='header'>Ads<button id='addAdButton'>+</button></div>
+    <div id='ads'></div>
+  </div>
 </div>
+
 
 </body>
 </html>

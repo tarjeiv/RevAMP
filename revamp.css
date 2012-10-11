@@ -11,8 +11,17 @@ body, div, input {
 .visible {
   display:block;
 }
+
+.header #configureButton {
+  display:none;
+}
+.header:hover #configureButton {
+  display:inline;
+}
+
 #categories {
   //display:none;
+  clear:both;
 }
 #categoryContentTab {
   //display:none;
@@ -32,11 +41,36 @@ body, div, input {
   position: relative;
   box-shadow: 2px 2px 2px #ccc;
 }
+#preferences {
+  height:320px;
+  display:none;
+  margin-bottom:20px;
+}
+#preferences .button {
+  clear:both;
+}
+#preferences table {
+  float:left;
+  width:33%;
+}
+#preferences table .heading {
+  background-color:grey;
+}
 .category input {
   font-size:16px;
   margin:0px;
   padding:0px;
-  width:95  %;
+  width:60%;
+}
+.category button {
+  display:none;
+  margin-top:0px;
+}
+.category:hover button {
+  display:block;
+  position:absolute;
+  top:10px;
+  right:10px;
 }
 .category:hover, .button:hover {
   background-color:#3a3;
@@ -97,12 +131,12 @@ body, div, input {
   clear:both;
 }
 
-#keywords {
+#keywordsContainer {
   float:left;
   width:30%;
   margin-right:10px;
 }
-#ads {
+#adsContainer {
   float:left;
   width:69%;
 }
@@ -110,6 +144,12 @@ body, div, input {
   padding:6px;
   cursor: pointer;
   position:relative;
+}
+.keyword button {
+  display:none;
+}
+.keyword:hover button {
+  display:inline;
 }
 #keywords input {
   margin-top:3px;
@@ -157,7 +197,7 @@ body, div, input {
   cursor: pointer;
 }
 .ad.inputMode {
-  height:140px;
+  height:110px;
   text-align:center;
   padding:0px;
   margin:0px;
@@ -212,17 +252,15 @@ body, div, input {
   cursor:pointer;
 }
 
-.headerButton {
+button {
  float:right;
  margin-left:10px;
  text-align:center;
  background:#ddd;
- cursor:pointer;
- padding:3px 10px 3px 10px;
- margin-top:-4px;
- border:1px solid transparent;
+ margin-top:-2px;
+ border:1px solid #ccc;
 }
-.headerButton:hover {
+button:hover {
   border:1px solid #aaa;
   background:#eee;
 }

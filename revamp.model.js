@@ -2,30 +2,6 @@
 //
 // tarjei@google.com
 //
-// Class methods for loading/saving the objects
-//=======================================================================================================
-// Category objects
-//-------------------------------------------------------------------------------------------------------
-Category.loadCategories = function () {
-  var serializedCategories;
-  try {
-    serializedCategories = localStorage.getItem('revampCategories');
-  }
-  catch (error) {
-    alert('Could not load the categories:'+error);
-  }
-  var structure = JSON.parse(serializedCategories);
-  return new Category(structure);
-}
-Category.saveCategories = function (categories) {
-  try {
-    localStorage.setItem('revampCategories', categories.serialize());
-  }
-  catch (error) {
-    alert('Could not save the categories:'+error);
-  }
-}
-
 // Constructor, accessors and methods for the Category object
 //=======================================================================================================
 function Category (init) {
@@ -64,8 +40,24 @@ Category.prototype.createSubCategory = function (init) {
   child.setParent( this );
   return child;
 }
-Category.prototype.getKeywords = function () { return this.keywords }
+Category.prototype.deleteSubCategory = function (category) {
+  this._deleteEntity(category, 'subCategories');
+}
+Category.prototype._deleteEntity = function (entity, entityType) {
+  entityType.replace(/^(\w)/, function (s){return s.toUpperCase()});
+  if (this['get'+entityType] && this['set'+entityType]) {
+    var entities = this['get'+entityType]();
+    for (var i=0; i<entities.length;i++) {
+     if (entity === entities[i]) {
+        entities.splice(i, 1);
+        this['set'+entityType](entities);
+        break;
+     }
+    }
+  }
+}
 
+Category.prototype.getKeywords = function () { return this.keywords }
 Category.prototype.setKeywords = function (keywords) {
   this.keywords = [];
   for (var i=0;i<keywords.length;i++) {
@@ -84,6 +76,9 @@ Category.prototype.createKeywordFromString = function (text) {
   this.keywords.push(keyword);
   return keyword;
 }
+Category.prototype.deleteKeyword = function (keyword) {
+  this._deleteEntity(keyword, 'keywords');
+}
 Category.prototype.getAds = function () {return this.ads}
 Category.prototype.setAds = function (ads) {
   this.ads = [];
@@ -98,11 +93,8 @@ Category.prototype.createAd = function (init) {
   this.ads.push(ad)
   return ad;
 }
-
-// Method for serializing a category (w/KWs and ads)
-//-----------------------------------------------------
-Category.prototype.serialize    = function () {
-  return JSON.stringify(this);
+Category.prototype.deleteAd = function (ad) {
+  this._deleteEntity(ad, 'ads');
 }
 
 // Constructor, accessors and methods for the Keyword object

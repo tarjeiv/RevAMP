@@ -1,11 +1,11 @@
-// Control structure for the revamp project
+// Controller for the revamp project
 //
 // tarjei@google.com
 //
 //-----------------------------------------------------------
  $(document).ready(function(){
     function toggleTabs() {
-      $('#categories').toggle('slow');
+      $('#categoriesContainer').toggle('slow');
       $('#categoryContentTab').toggle('slow');
       $('#createAccountTab').toggle('slow');
     }
@@ -22,12 +22,15 @@
       })
     });
 
-    //$('#createAccountButton').click();
-
+    $('#configureButton').click(function (){
+      $('#preferences').toggle('slow');
+      $('#categories').toggle('slow');
+      $('#categoryContentTab').toggle('slow');
+      $('#createAccountButton').toggle('slow');
+    });
 
     $('.prefillable').keyup(function(e){
       $('.prefilled').each(function(i,elm){
-        console.log(elm);
       });
     });
 
@@ -36,7 +39,33 @@
     $('#addKeywordButton').click(function () {renderer.addKeyword();});
     $('#addAdButton').click(function () {renderer.addAd();});
 
+    $('#saveConfigurationButton').click(function(){
+      var config = {
+          categories:'',
+          category:'',
+          keywords:'',
+          keyword:'',
+          ads:'',
+          ad:''
+        };
+      var baseUrl = $('input[name=baseUrl]').val();
+
+      for (var option in config) {
+        config[option] = baseUrl+$('input[name='+option+']').val();
+      }
+      renderer.setRESTConfig( config );
+      $('#categories').empty();
+      $('#keywords').empty();
+      $('#ads').empty();
+      setupCategories(renderer);
+      $('#configureButton').click();
+    });
+
+    setupCategories(renderer);
+
+
     // XXX REFACTOR THIS!!!!!!!!!!!
+    function setupCategories (renderer) {
     renderer.doReq({
       service  : 'categories',
       callback : function (data) {
@@ -79,7 +108,8 @@
                       descriptionLine1 : ad.description1,
                       descriptionLine2 : ad.description2,
                       displayUrl       : ad.displayUrl,
-                      id               : ad.textAdId
+                      id               : ad.textAdId,
+                      url              : ad.url
                     })
                   }
                 }})(subCat)
@@ -91,15 +121,20 @@
         }
       }
     });
+  }
 
  });
 
 function Renderer () { 
   this.selectedCategory = null;
   this.setRESTConfig({
-    categories : 'http://172.28.211.202:8081/categories/',
-    keywords   : 'http://172.28.211.202:8081/categories/{categoryId}/keywords/',
-    ads        : 'http://172.28.211.202:8081/categories/{categoryId}/textads/',
+    categories : 'http://localhost:8081/categories/',
+    category   : 'http://localhost:8081/category/{categoryId}',
+    keywords   : 'http://localhost:8081/category/{categoryId}/keywords/',
+    keyword    : 'http://localhost:8081/keyword/{keywordId}',
+    ads        : 'http://localhost:8081/category/{categoryId}/textads/',
+    ad         : 'http://localhost:8081/textad/{adId}',
+    test       : 'http://dhcp-172-28-211-87.zrh.corp.google.com/'
   });
 }
 Renderer.prototype.setSelectedCategory = function (category) {this.selectedCategory = category}
@@ -121,12 +156,15 @@ Renderer.prototype.doReq = function (opts) {
       type:opts.method,
       url:url,
       data:opts.data,
+      crossDomain:true,
+//      dataType:'jsonp',
       success:opts.callback
     });
   
 }
 Renderer.prototype.renderCategory = function (category) {
   var renderer = this;
+
   var categoryElm = $('<div/>')
     .attr('id', 'cat_'+category.getId())
     .addClass('category')
@@ -136,17 +174,46 @@ Renderer.prototype.renderCategory = function (category) {
       var input = $('<input/>')
       .val(category.getName())
       .blur(function(){
+        category.setName($(input).val());
         $(categoryElm)
-        .html($(input).val())
-        .addClass('selectedCategory');
-        // XXX Update
+        .html(category.getName())
+        renderer.doReq({
+          service  :'categories',
+          method   : 'POST',
+          data     : JSON.stringify({
+              categoryId       : category.getId(),
+              name             : category.getName(),
+              parentCategoryId : category.getParent().getId(),
+            }),
+          callback : function (data) {
+            category.setId( data.categoryId );
+          }
+        });
       });
-      $(categoryElm).html(input)
-      .removeClass('selectedCategory');
-      $(input).focus().select()
+    $(categoryElm).html(input).removeClass('selectedCategory');
+    $(input).focus().select()
+  });
 
+    var deleteButton = $('<button>-</button>')
+    .click(function () {
+        renderer.doReq({
+          service  :'category',
+          keys     : {categoryId:category.getId()},
+          method   : 'DELETE',
+          data     : JSON.stringify({
+            categoryId : category.getId(),
+            }),
+          callback : function (data) {
+            category.getParent().deleteSubCategory( category );
+            $(categoryElm).remove();
+          }
+      })
+      return false;
     });
-    return categoryElm;
+
+  $(categoryElm).append(deleteButton);
+
+  return categoryElm;
 }
 
 Renderer.prototype.renderCategories = function (category, elm, hide) {
@@ -164,8 +231,10 @@ Renderer.prototype.renderCategories = function (category, elm, hide) {
   $(elm).prepend(thisCategoryElm);
   var adder =  $('<div/>').addClass('category addCategory').text('+ Add new');
   $(adder).click(function (){
-      var child = category.createSubCategory({id:'XXX', name:'New Category'});
-      $(adder).before( renderer.renderCategory(child) );
+      var child = category.createSubCategory({name:'New Category'});
+      var newCatElm = renderer.renderCategory(child);
+      $(adder).before( newCatElm );
+      $(newCatElm).dblclick();
     })
   $(thisCategoryElm).append( adder );
   return thisCategoryElm;
@@ -194,56 +263,73 @@ Renderer.prototype.showCategories = function (category) {
 }
 Renderer.prototype.addKeyword = function () {
   var category = this.getSelectedCategory();
-  if (category) {
+  if (category && category.getId()) {
     var kw = category.createKeyword({text:'Keyword'});
     this.renderKeywords(category.getKeywords(), kw);
   }
   else {
-    alert('No category selected'); // XXX Smoke
+    smoke.alert('No category selected'); // XXX Smoke
   }
 }
 Renderer.prototype.renderKeyword = function (keyword) {
-    var renderer = this;
-    var classes = ['keyword', keyword.getMatchType()];
-    if (keyword.getIsNegative()) classes.push('negative');
-    return $('<div/>')
-      .attr('id', 'kw_'+keyword.getId())
-      .addClass(classes.join(" "))
-      .text(keyword.getText())
-      .click(function() {
-        var kwInput = $('<input/>')
-            .attr('value', keyword.toText())
-            .blur(function () {
-                    editedKW = Keyword.newFromString(this.value);
-                    keyword.setText( editedKW.getText() );
-                    keyword.setMatchType( editedKW.getMatchType() );
-                    keyword.setIsNegative( editedKW.getIsNegative() );
-                    $(this).replaceWith(renderer.renderKeyword(keyword));
-                    // XXX REFACTOR
-                    renderer.doReq({
-                      service  :'keywords',
-                      keys     : {categoryId:renderer.getSelectedCategory().getId()},
-                      method   : 'POST',
-                      data     : JSON.stringify({
-                        keywordId  : keyword.getId(),
-                        text       : keyword.getText(),
-                        matchType  : keyword.getMatchType().toUpperCase(),
-                        negative   : false,
-                        categoryId : renderer.getSelectedCategory().getId(),
-                        partnerId  : 1,
-                      }),
-                      callback : function (data) {
-                        keyword.setId( data.keywordId );
-                      }
-                    });
-                  });
+  var renderer = this;
+  var classes = ['keyword', keyword.getMatchType()];
+  if (keyword.getIsNegative()) classes.push('negative');
 
-            $(this).replaceWith(kwInput)
-              .removeClass('negative')
-              .removeClass('exact')
-              .removeClass('phrase');
-            $(kwInput).focus().select();
-        });  
+  var kwElm = $('<div/>')
+    .attr('id', 'kw_'+keyword.getId())
+    .addClass(classes.join(" "))
+    .text(keyword.getText())
+    .click(function() {
+      var kwInput = $('<input/>')
+        .attr('value', keyword.toText())
+        .blur(function () {
+          editedKW = Keyword.newFromString(this.value);
+          keyword.setText( editedKW.getText() );
+          keyword.setMatchType( editedKW.getMatchType() );
+          keyword.setIsNegative( editedKW.getIsNegative() );
+          $(this).replaceWith(renderer.renderKeyword(keyword));
+          renderer.doReq({
+            service  :'keywords',
+            keys     : {categoryId:renderer.getSelectedCategory().getId()},
+            method   : 'POST',
+            data     : JSON.stringify({
+              keywordId  : keyword.getId(),
+              text       : keyword.getText(),
+              matchType  : keyword.getMatchType().toUpperCase(),
+              negative   : false,
+              categoryId : renderer.getSelectedCategory().getId(),
+            }),
+            callback : function (data) {
+              keyword.setId( data.keywordId );
+            }
+          });
+        });
+
+    $(this).replaceWith(kwInput)
+    .removeClass('negative')
+    .removeClass('exact')
+    .removeClass('phrase');
+    $(kwInput).focus().select();
+  }); 
+  
+  var deleteButton = $('<button/>')
+  .text('-') 
+  .click(function(){
+    renderer.doReq({
+      service  :'keyword',
+      keys     : {keywordId:keyword.getId()},
+      method   : 'DELETE',
+      callback : function (data) {
+        renderer.getSelectedCategory().deleteKeyword( keyword );
+        $(kwElm).remove();
+      }
+    });
+    return false;
+  });
+  kwElm.append(deleteButton)
+     
+  return kwElm;
 }
 Renderer.prototype.renderKeywords =  function (keywords, focus) {
   var keywordsElm = $('#keywords').empty();
@@ -255,8 +341,7 @@ Renderer.prototype.renderKeywords =  function (keywords, focus) {
 }
 Renderer.prototype.addAd = function () {
   var category = this.getSelectedCategory();
-  console.log('Adding');
-  if (category) {
+  if (category && category.getId()) {
     var ad = category.createAd({
         title:'Title',
         descriptionLine1:'Descriptional line 1',
@@ -267,7 +352,7 @@ Renderer.prototype.addAd = function () {
     this.renderAds(category.getAds(), ad);
   }
   else {
-    alert('No category selected'); // XXX Smoke
+    smoke.alert('Cannot create ad with no category selected'); // XXX Smoke
   } 
 }
 Renderer.prototype.editAd = function (ad, elm) {
@@ -280,19 +365,13 @@ Renderer.prototype.editAd = function (ad, elm) {
     url:     $('<input name="url"/>').addClass('url').val(ad.getUrl()),
   };
 
-  var editElm = $('<div/>')  
-  .addClass('ad inputMode')
-  .append(
-      edit.title, edit.desc1, edit.desc2,
-      edit.display,
-      edit.url,
-      $('<button>Done</button>').click(function () {
+  var editElm = $('<div/>').addClass('ad inputMode');
+  var doneButton = $('<button>Done</button>').click(function () {
         ad.setTitle( edit.title.val() );
         ad.setDescriptionLine1( edit.desc1.val() );
         ad.setDescriptionLine2( edit.desc2.val() );
         ad.setDisplayUrl( edit.display.val() );
         ad.setUrl( edit.url.val() );
-
         renderer.doReq({
           service  :'ads',
           keys     : {categoryId:renderer.getSelectedCategory().getId()},
@@ -307,16 +386,30 @@ Renderer.prototype.editAd = function (ad, elm) {
               url          : ad.getUrl(),
             }),
           callback : function (data) {
-            console.log(data);
             ad.setId( data.textAdId );
           }
         });
-
         $(editElm).replaceWith(renderer.renderAd(ad));
-      }),
-      $('<button>Delete</button>').click(function () {
-
+      });
+  var deleteButton = $('<button>Delete</button>')
+    .click(function () {
+        renderer.doReq({
+          service  :'ad',
+          keys     : {adId:ad.getId()},
+          method   : 'DELETE',
+          callback : function (data) {
+            renderer.getSelectedCategory().deleteAd( ad );
+            $(editElm).remove();
+          }
       })
+    });
+
+  $(editElm).append(
+      edit.title, edit.desc1, edit.desc2,
+      edit.display,
+      edit.url,
+      deleteButton,
+      doneButton
    );
   $(elm).replaceWith(editElm);
   $(edit.title).focus().select();
